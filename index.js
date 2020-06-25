@@ -1,7 +1,9 @@
 const fs = require('fs');
 const express = require('express');
-const path = require('path')
+const path = require('path');
+const bodyParser = require('body-parser');
 const app = express();
+app.use(bodyParser.json());
 
 let server = app.listen(3000, function() {
     // let host = server.address().address;
@@ -10,12 +12,13 @@ let server = app.listen(3000, function() {
     console.log("Text File app listening at 3000");
 });
 
-app.get('/create', (req, res) => {
-    let today = new Date();
-    let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-    let time = today.getHours() + "-" + today.getMinutes() + "-" + today.getSeconds();
-    let filename = `${date}(${time})`;
-    fs.writeFile(`${filename}.txt`, `Created at - ${date} ${time}`, 'utf8', (err) => {
+app.post('/create', (req, res) => {
+    // let today = new Date();
+    // let date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    // let time = today.getHours() + "-" + today.getMinutes() + "-" + today.getSeconds();
+    // let filename = `${date}(${time})`;
+    // console.log(req.body)
+    fs.writeFile(`${req.body.name}.txt`, `Created at - ${req.body.content}`, 'utf8', (err) => {
         if (err) throw err;
         res.send("filecreated");
     })
